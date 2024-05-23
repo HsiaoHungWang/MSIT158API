@@ -6,7 +6,8 @@ using MSIT158API.Models.DTO;
 
 namespace MSIT158API.Controllers
 {
-    [Route("api/[controller]")]
+    //https://localhost/api/spots
+    [Route("api/[controller]")]  
     [ApiController]
     public class SpotsController : ControllerBase
     {
@@ -15,9 +16,21 @@ namespace MSIT158API.Controllers
         {
             _context = context;
         }
+        //GET  https://localhost/api/spots
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<SpotImagesSpot>>> GetSpots()
+        {
+            return await _context.SpotImagesSpots.ToListAsync();
+        }
+        [HttpGet]
+        [Route("search")]
+        public async Task<ActionResult<IEnumerable<SpotImagesSpot>>> GetSpots1(string keyword)
+        {
+            return await _context.SpotImagesSpots.Where(s=>s.SpotTitle.Contains(keyword)).ToListAsync();
+        }
 
-        [HttpPost]
-        public  async Task<ActionResult<SpotsPagingDTO>> GetSpots(SearchDTO searchDTO)
+        [HttpPost]      
+        public  async Task<ActionResult<SpotsPagingDTO>> GetSpotsBySearch(SearchDTO searchDTO)
         {
             //根據分類編號搜尋景點資料
             var spots = searchDTO.categoryId == 0 ? _context.SpotImagesSpots : _context.SpotImagesSpots.Where(s => s.CategoryId == searchDTO.categoryId);
