@@ -17,7 +17,7 @@ namespace MSIT158API.Controllers
         }
 
         [HttpPost]
-        public  async Task<ActionResult<SpotsPagingDTO>> GetSpots([FromBody] SearchDTO searchDTO)
+        public  async Task<ActionResult<SpotsPagingDTO>> GetSpots(SearchDTO searchDTO)
         {
             //根據分類編號搜尋景點資料
             var spots = searchDTO.categoryId == 0 ? _context.SpotImagesSpots : _context.SpotImagesSpots.Where(s => s.CategoryId == searchDTO.categoryId);
