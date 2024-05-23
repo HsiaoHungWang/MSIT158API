@@ -1,4 +1,5 @@
 
+using Microsoft.Build.Framework;
 using Microsoft.EntityFrameworkCore;
 using MSIT158API.Models;
 
@@ -11,6 +12,11 @@ namespace MSIT158API
             var builder = WebApplication.CreateBuilder(args);
             builder.Services.AddControllers().AddXmlSerializerFormatters();
 
+            //設定CORS
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll", builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+            });
 
             // Add services to the container.
             builder.Services.AddControllers();
@@ -34,6 +40,9 @@ namespace MSIT158API
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+
+            //套用設定好的CORS
+            app.UseCors("AllowAll");
 
             app.UseHttpsRedirection();
 

@@ -29,6 +29,14 @@ namespace MSIT158API.Controllers
             return await _context.SpotImagesSpots.Where(s=>s.SpotTitle.Contains(keyword)).ToListAsync();
         }
 
+        [HttpGet]
+        [Route("title")]
+        public async Task<ActionResult<IEnumerable<String>>> GetSpotssTitle(string title)
+        {
+            var titles = _context.Spots.Where(s => s.SpotTitle.Contains(title)).Select(s => s.SpotTitle).Take(8);
+            return await titles.ToListAsync();
+        }
+
         [HttpPost]      
         public  async Task<ActionResult<SpotsPagingDTO>> GetSpotsBySearch(SearchDTO searchDTO)
         {
